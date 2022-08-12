@@ -4,7 +4,7 @@
   <groupId>com.secsign</groupId>
   <artifactId>secsign-keycloak</artifactId>
   <name>SecSign Keycloak Authenticator</name>
-  <version>0.0.1</version>
+  <version>1.0.1</version>
   <build>
     <finalName>secsign-authenticator</finalName>
     <plugins>

@@ -373,8 +373,8 @@ public class SecSignRequiredAction implements RequiredActionProvider {
 		    	        	context.getUser().removeRequiredAction(PROVIDER_ID);
 		    	        	context.getUser().setSingleAttribute("secsignid", context.getHttpRequest().getFormParameters().getFirst("secsign_secsignid"));
 		    		        context.success();
+		    		        return;
 		    	        }
-	    			break;
 	    		}
 	    		case "cancelAuth":
 	    			try {	
