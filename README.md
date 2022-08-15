@@ -1,63 +1,62 @@
-Voraussetzungen
+Installation of the extension
+
+Requirements
 <ol class="big">
- 	<li>Eine voll funktionsfähige Keycloak Installation.</li>
- 	<li>Die Extension als .jar-Datei (<a href="">Download hier</a>)</li>
+ 	<li>A fully working Keycloak installation.</li>
+ 	<li>The extension as .jar-file (<a href="https://github.com/SecSign/SecSign-ID-Keycloak-Plugin/releases">Download here</a>)</li>
 </ol>
 
 <strong>Installation</strong>
 <ol class="big" >
- 	<li>Beenden Sie den Keycloak-Server</li>
-        <li>Kopieren Sie die .jar-Datei ("secsign-authenticator.jar") in den Unterordner "providers" des Keycloak-Ordners</li>
- 	<li>Bauen Sie die Installation neu auf mit "kc.sh build"
-            Dies löscht keine vorhandenen Einstellungen. Es integriert lediglich neu gefundene Extensions ins System
+ 	<li>Shutdown the Keycloak-Server</li>
+        <li>Copy the .jar-file ("secsign-authenticator.jar") to the subfolder "providers" of the keycloak installation folder</li>
+ 	<li>Rebuild the Installation of keycloak with the command "kc.sh build" in the "bin" subfolder of keycloak
+            This will not erase any settings, It justs loads all new found extensions to the system
         </li>
-        <li>Anschließen starten Sie den Server (z.B. mit "kc.sh start" oder "kc.sh start-dev")</li>
-        <li>Loggen Sie sich als Admin in der Keycloak Admin Console ein.</li>
-        <li>Wählen Sie das Realm, welches durch 2FA gesichert werden soll</li>
-        <li>Öffnen Sie die "Authentication" Einstellungen</li>
-        <li>Wenn Sie bereits einen eigenen Flow erstellt haben, wählen Sie diesen. Ansonsten kopieren Sie einen existierenden Flow oder erstellen Sie einen neuen.</li>
-        <li>In der Ausführungsreihenfolge muss vor dem SecSign ID Authenticator ein Schritt vorkommen, welcher den User identifiziert (z.B Username Password Form). In einem neuen Flow können Sie diesen hinzufügen, indem Sie "Add execution" wählen</li>
-        <li>Anschließend fügen Sie ebenfalls durch "Add execution" den "SecSign ID" Authenticator hinzu.</li>
-        <li>Wenn Sie diesen hinzugefügt haben, ändern Sie das eingestellte "Requirement" auf "Required", da ansonsten die 2FA umgangen werden kann und für Benutzer ohne gespeicherte SecSign ID automatisch übersprungen wird.</li>
-
-<img style="width:100%;" src="https://www.secsign.com/wp-content/uploads/2022/07/flow.png" alt="Flow mit SecSign ID Authenticator" />
-
-        <li>Wenn Sie einen on-premise SecSign ID Server besitzen, wählen Sie auf der rechten Seite unter "Actions" die Option "Config" und befolgen Sie die Hilfestellungen unter Konfiguration.</li>
-        <li>Um den erstellten Flow nun zu nutzen wählen Sie den Tab "Bindings" und wählen Sie den neuen Flow als "Browser Flow" (Für Login im Browser) aus.</li>
+        <li>Afterwards start the server (e.g. with "kc.sh start" or "kc.sh start-dev")</li>
+        <li>Login as admin to the keycloak console</li>
+        <li>Choose the real that shoud be secured by the 2FA</li>
+        <li>Open the "Authentication" settings</li>
+        <li>If you already use an own flow, choose it. Else you need to create a Flow by copying an existing or creating a new one.</li>
+        <li>In the execution order there has to be a step which identifies the User (e.g Username Password Form) in front of the SecSign ID Authenticator. In a new flow you can do it by "Add execution"</li>
+        <li>Subsequently please add "SecSign ID" Authenticator" by "Add execution".</li>
+        <li>If you added the authenticator, please change the "Requirement" to "Required", else 2FA can be skipped or is automatically skipped for users without a saved SecSign ID. <img style="width:100%;" src="https://www.secsign.com/wp-content/uploads/2022/07/flow.png" alt="Flow with SecSign ID Authenticator" /> </li>
+        <li>If you own an on-premise SecSign ID server, you can choose "Config" on the right side on the option "Actions" and follow the help below on "Configuration"</li>
+        <li>To use the created flow, choose "Bindings" and select your flow as the "Browser Flow" (for Login in the browser).</li>
+        <li>In the tab "Required Actions" enable the checkbox at "Enabled" beside "SecSign ID", so users without a SecSign ID can create one on login.<img style="width:100%;" src="https://www.secsign.com/wp-content/uploads/2022/07/bindings.png" alt="Selection of the flow" /></li>
         
-        <img style="width:100%;" src="https://www.secsign.com/wp-content/uploads/2022/07/bindings.png" alt="Auswahl des passenden Flows" />
 
 </ol>
-[header rank="1" short="Konfiguration"]Konfiguration des Plugins [/header]
+Configuration of the extension
 
-Es gibt verschiedene Konfigurationsmöglichkeiten:
+There are multiple configurations:
 <ol class="big">
- 	<li>Im erstellten Flow können Sie rechts unter "Actions" die Option "Config" wählen, um so ihren on-premise SecSign ID-Server einzurichten. Hierfür benötigen Sie 3 Einstellungen:</li>
-<img style="width:100%;" src="https://www.secsign.com/wp-content/uploads/2022/07/config.png" alt="Config des Secsign Authenticators" />
+ 	<li>In your created flow you can choose "Config" on the menu for "Actions", to setup your on-premise SecSign ID Server.
+For this you need 3 settings:
+<img style="width:100%;" src="https://www.secsign.com/wp-content/uploads/2022/07/config.png" alt="Config of the Secsign Authenticator" />
             <ul>
-              <li><strong>SecSign ID Server URL:</strong> Die URL ihres on-premise SecSign ID Server. (z.B: https://idserver.yourcompany.com)</li>
-              <li><strong>Pin Account User:</strong> Der PinAccount, um auf Ihren Server zuzugreifen. Dieser benötigt die Rechte, um Secsign IDs auf dem Server zu erstellen</li>
-	      <li><strong>Pin Account Password:</strong> Das Passwort des PinAccount, um auf Ihren Server zuzugreifen.</li>
+              <li><strong>SecSign ID Server URL:</strong>The URL of the on-premise SecSign ID Server. (e.g: https://idserver.yourcompany.com)</li>
+              <li><strong>Pin Account User:</strong> The PinAccount, to use the server. This Application User needs access rights, to create SecSign IDs on the server.</li>
+	      <li><strong>Pin Account Password:</strong> The password of the PinAccount, to use the server.</li>
             </ul>
-
- 	<li>Außerdem können Sie die SecSign IDs von einzelnen Usern ändern oder manuell hinzufügen. Dazu navigieren Sie in der Admin-Konsole zu "Users" und wählen den User, den 
-          Sie anpassen wollen. Im Tab "Attributes" können Sie nun, wenn vorhanden, das Attribut "secsignid" anpassen oder neu hinzufügen.
+</li>
+ 	<li>Furthermore you can change or add SecSign IDs of single users. For that navigate to the "Users" option on the keycloak admin console and choose the user to change the SecSign ID for. In the tab "attributes" you can add or change the attribute "secsignid".
         </li>
-<img style="width:100%;" src="https://www.secsign.com/wp-content/uploads/2022/07/attributes.png" alt="Config des Secsign Authenticators" />
+<img style="width:100%;" src="https://www.secsign.com/wp-content/uploads/2022/07/attributes.png" alt="Attributes of the user" />
 </ol>
 
-[header rank="1" short="Ablauf"]Ablauf des Logins [/header]
+Procedure of Login
 <ul>
-<li>Der Nutzer identifiziert sich im ersten Schritt, z.B. über eine Username Password Form.</li>
-<li>Anschließend wird geprüft, ob der Benutzer bereits eine SecSign ID hat.</li>
-<li>Wenn er eine SecSign ID gespeichert hat, so wird die Authentifzierung automatisch damit gestartet.</li>
+<li>The user identifies in the first step, e.g. by entering username and password.</li>
+<li>Afterwards there is a check, whether the user has a SecSign ID.</li>
+<li>If the user already has a SecSign ID saved, the authentication is started for that.</li>
 
-<li>Wenn er keine SecSign ID hat, so wird nun eine für ihn erstellt und der entsprechende QR-Code für diese SecSign ID auf dem Bildschirm angezeigt.
-Diese muss der User nun mit der App auf dem Smartphone scannen. Wenn dies durchgeführt wurde, beginnt automatisch die Authentifizierung mit dieser SecSign ID.
+<li>If the user has no SecSign ID, one is created for him and the corresponding QR-Code is shown on the screen.
+After scanning the QR-Code with the smartphone and creating the SecSign ID on the smartphone, the authentication is started automatically.
 </li>
 
-<li>Beim nächsten Login kann der User dann direkt die Secsign ID zum Authentifizieren nutzen.</li>
+<li>On the next login, the user can use the SecSign ID immediately.</li>
 </ul>
-<img style="max-width:200px;vertical-align: top;" src="https://www.secsign.com/wp-content/uploads/2022/07/login-form.png" alt="Username und Password Login Form" /> <img style="max-width:200px;vertical-align: top;" src="https://www.secsign.com/wp-content/uploads/2022/07/qr.png" alt="QR-Code zur Erstellung der SecSign ID" /> <img style="max-width:200px;vertical-align: top;" src="https://www.secsign.com/wp-content/uploads/2022/07/auth.png" alt="Auth-Prozess mit der SecSign ID" />
+<img style="max-width:300px;vertical-align: top;" src="https://www.secsign.com/wp-content/uploads/2022/07/login-form.png" alt="Username und Password Login Form" /> <img style="max-width:300px;vertical-align: top;" src="https://www.secsign.com/wp-content/uploads/2022/07/qr.png" alt="QR-Code for creation of the SecSign ID" /> <img style="max-width:300px;vertical-align: top;" src="https://www.secsign.com/wp-content/uploads/2022/07/auth.png" alt="Auth-Process with SecSign ID" />
 
 
