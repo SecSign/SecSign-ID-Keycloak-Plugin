@@ -25,13 +25,13 @@
 
 	<groupId>com.secsign</groupId>
     <artifactId>secsign-keycloak</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
     <packaging>jar</packaging>
 
 	<properties>
 	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	    <maven.compiler.source>11</maven.compiler.source>
-	    <maven.compiler.target>11</maven.compiler.target>
+	    <maven.compiler.source>17</maven.compiler.source>
+	    <maven.compiler.target>17</maven.compiler.target>
 	</properties>
     <dependencies>
     <!-- https://mvnrepository.com/artifact/org.json/json -->
@@ -44,19 +44,19 @@
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-core</artifactId>
             
-			<version>18.0.0</version>
+			<version>22.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-server-spi</artifactId>
             <scope>provided</scope>
-			<version>18.0.0</version>
+			<version>22.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-server-spi-private</artifactId>
             <scope>provided</scope>
-			<version>18.0.0</version>
+			<version>22.0.4</version>
         </dependency>
         <dependency>
             <groupId>org.jboss.logging</groupId>
@@ -68,7 +68,7 @@
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-services</artifactId>
             <scope>provided</scope>
-			<version>18.0.0</version>
+			<version>22.0.4</version>
         </dependency>
     </dependencies>
 

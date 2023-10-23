@@ -17,13 +17,9 @@
 
 package com.secsign.keycloak.authenticator;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
-
-import javax.ws.rs.core.Response;
 
 import org.jboss.logging.Logger;
 import org.keycloak.authentication.RequiredActionContext;
@@ -38,6 +34,8 @@ import com.secsign.java.rest.SecSignIDRESTException;
 import com.secsign.java.rest.SecSignIDRESTPluginRegistrationResponse;
 import com.secsign.java.rest.SecSignRESTConnector;
 import com.secsign.java.rest.SecSignRESTConnector.PluginType;
+
+import jakarta.ws.rs.core.Response;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
@@ -79,13 +77,13 @@ public class SecSignRequiredAction implements RequiredActionProvider {
 	    	//defaultServer , get PinAccount user or create one, if none exists
 			SecSignUtils.saveServerURL(SecSignUtils.DEFAULT_SERVER);
 			UserModel secsignUser=null;
-	    	if(context.getSession().userLocalStorage().getUserByUsername(context.getRealm(), "SecSign_PinAccount")!=null)
+			if(context.getSession().users().getUserByUsername(context.getRealm(), "SecSign_PinAccount")!=null)
 	    	{
 	    		//get pinAccount user
-	    		secsignUser=context.getSession().userLocalStorage().getUserByUsername(context.getRealm(), "SecSign_PinAccount");
+	    		secsignUser=context.getSession().users().getUserByUsername(context.getRealm(), "SecSign_PinAccount");
 	    	}else {
 	    		//create pinAccount user
-	    		secsignUser=context.getSession().userLocalStorage().addUser(context.getRealm(), "SecSign_PinAccount");
+	    		secsignUser=context.getSession().users().addUser(context.getRealm(), "SecSign_PinAccount");
 	    	}
 			
 	    	//get Attributes from the user to get pinAccount data
@@ -201,9 +199,9 @@ public class SecSignRequiredAction implements RequiredActionProvider {
     @Override
     public void processAction(RequiredActionContext context) {
     	
-    	if(context.getHttpRequest().getFormParameters().getFirst("secsign_createAction")!=null)
+    	if(context.getHttpRequest().getDecodedFormParameters().getFirst("secsign_createAction")!=null)
     	{
-	    	switch(context.getHttpRequest().getFormParameters().getFirst("secsign_createAction"))
+	    	switch(context.getHttpRequest().getDecodedFormParameters().getFirst("secsign_createAction"))
 	    	{
 	    	case "cancelCreation":
 	    		//cancel Creation -> error, no login possible
@@ -211,7 +209,7 @@ public class SecSignRequiredAction implements RequiredActionProvider {
 	    		return;
 	    	case "checkCreation":
 	    		//check whether ID is created yet
-	    		String secSignID=URLDecoder.decode(context.getHttpRequest().getFormParameters().getFirst("secsign_secsignid"),StandardCharsets.UTF_8);
+	    		String secSignID=context.getHttpRequest().getDecodedFormParameters().getFirst("secsign_secsignid");
 	    		try {
 					boolean exists=SecSignUtils.getRESTConnector().checkSecSignID(secSignID);
 					if(exists)
@@ -264,8 +262,9 @@ public class SecSignRequiredAction implements RequiredActionProvider {
 				      
 					}else {
 						// show qrCode again
-						String createQRCode=URLDecoder.decode(context.getHttpRequest().getFormParameters().getFirst("secsign_createQRCode"),StandardCharsets.UTF_8);
-						String createURL=URLDecoder.decode(context.getHttpRequest().getFormParameters().getFirst("secsign_createURL"),StandardCharsets.UTF_8);
+						String createQRCode=context.getHttpRequest().getDecodedFormParameters().getFirst("secsign_createQRCode");
+						String createURL=context.getHttpRequest().getDecodedFormParameters().getFirst("secsign_createURL");
+						
 						//reshow qr code
 						context.form().setAttribute("createQRCode",createQRCode);
 			    		context.form().setAttribute("createURL", createURL);
@@ -289,8 +288,8 @@ public class SecSignRequiredAction implements RequiredActionProvider {
 	    	
 	    	String errorMsg="";
 	    	//get authSessionID from Form
-	    	String authSessionID=context.getHttpRequest().getFormParameters().getFirst("secsign_authSessionID");
-	    	switch(context.getHttpRequest().getFormParameters().getFirst("secsign_accessPassAction"))
+	    	String authSessionID=context.getHttpRequest().getDecodedFormParameters().getFirst("secsign_authSessionID");
+	    	switch(context.getHttpRequest().getDecodedFormParameters().getFirst("secsign_accessPassAction"))
 	    	{
 	    		case "checkAuth":
 	    		{
@@ -371,7 +370,7 @@ public class SecSignRequiredAction implements RequiredActionProvider {
 		    	        	//authed, so proceed login
 		    		        //setCookie(context);
 		    	        	context.getUser().removeRequiredAction(PROVIDER_ID);
-		    	        	context.getUser().setSingleAttribute("secsignid", context.getHttpRequest().getFormParameters().getFirst("secsign_secsignid"));
+		    	        	context.getUser().setSingleAttribute("secsignid", context.getHttpRequest().getDecodedFormParameters().getFirst("secsign_secsignid"));
 		    		        context.success();
 		    		        return;
 		    	        }

@@ -21,8 +21,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.core.Response;
-
 import org.jboss.logging.Logger;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.Authenticator;
@@ -39,6 +37,8 @@ import com.secsign.java.rest.SecSignIDRESTException;
 import com.secsign.java.rest.SecSignIDRESTPluginRegistrationResponse;
 import com.secsign.java.rest.SecSignRESTConnector;
 import com.secsign.java.rest.SecSignRESTConnector.PluginType;
+
+import jakarta.ws.rs.core.Response;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
@@ -67,13 +67,14 @@ public class SecSignAuthenticator implements Authenticator {
 			//defaultServer , get PinAccount user or create one, if none exists
 			SecSignUtils.saveServerURL(SecSignUtils.DEFAULT_SERVER);
 			UserModel secsignUser=null;
-	    	if(context.getSession().userLocalStorage().getUserByUsername(context.getRealm(), "SecSign_PinAccount")!=null)
+			context.getSession().users().getUserByUsername(context.getRealm(), "SecSign_PinAccount");
+	    	if(context.getSession().users().getUserByUsername(context.getRealm(), "SecSign_PinAccount")!=null)
 	    	{
 	    		//get pinAccount user
-	    		secsignUser=context.getSession().userLocalStorage().getUserByUsername(context.getRealm(), "SecSign_PinAccount");
+	    		secsignUser=context.getSession().users().getUserByUsername(context.getRealm(), "SecSign_PinAccount");
 	    	}else {
 	    		//create pinAccount user
-	    		secsignUser=context.getSession().userLocalStorage().addUser(context.getRealm(), "SecSign_PinAccount");
+	    		secsignUser=context.getSession().users().addUser(context.getRealm(), "SecSign_PinAccount");
 	    	}
 			
 	    	//get Attributes from the user to get pinAccount data
@@ -204,8 +205,8 @@ public class SecSignAuthenticator implements Authenticator {
     	
     	String errorMsg="";
     	//get authSessionID from Form
-    	String authSessionID=context.getHttpRequest().getFormParameters().getFirst("secsign_authSessionID");
-    	switch(context.getHttpRequest().getFormParameters().getFirst("secsign_accessPassAction"))
+    	String authSessionID=context.getHttpRequest().getDecodedFormParameters().getFirst("secsign_authSessionID");
+    	switch(context.getHttpRequest().getDecodedFormParameters().getFirst("secsign_accessPassAction"))
     	{
     		case "checkAuth":
     		{

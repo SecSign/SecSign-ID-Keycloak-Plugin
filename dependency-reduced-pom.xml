@@ -4,7 +4,7 @@
   <groupId>com.secsign</groupId>
   <artifactId>secsign-keycloak</artifactId>
   <name>SecSign Keycloak Authenticator</name>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <build>
     <finalName>secsign-authenticator</finalName>
     <plugins>
@@ -33,24 +33,24 @@
     <dependency>
       <groupId>org.keycloak</groupId>
       <artifactId>keycloak-core</artifactId>
-      <version>18.0.0</version>
+      <version>22.0.4</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.keycloak</groupId>
       <artifactId>keycloak-server-spi</artifactId>
-      <version>18.0.0</version>
+      <version>22.0.4</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.keycloak</groupId>
       <artifactId>keycloak-server-spi-private</artifactId>
-      <version>18.0.0</version>
+      <version>22.0.4</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
-          <artifactId>uap-java</artifactId>
-          <groupId>com.github.ua-parser</groupId>
+          <artifactId>httpclient</artifactId>
+          <groupId>org.apache.httpcomponents</groupId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -63,28 +63,32 @@
     <dependency>
       <groupId>org.keycloak</groupId>
       <artifactId>keycloak-services</artifactId>
-      <version>18.0.0</version>
+      <version>22.0.4</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
-          <artifactId>jakarta.mail</artifactId>
-          <groupId>com.sun.mail</groupId>
+          <artifactId>jakarta.mail-api</artifactId>
+          <groupId>jakarta.mail</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>jakarta.json</artifactId>
-          <groupId>org.glassfish</groupId>
+          <artifactId>angus-mail</artifactId>
+          <groupId>org.eclipse.angus</groupId>
         </exclusion>
         <exclusion>
           <artifactId>twitter4j-core</artifactId>
           <groupId>org.twitter4j</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
-          <groupId>org.jboss.spec.javax.ws.rs</groupId>
+          <artifactId>jakarta.ws.rs-api</artifactId>
+          <groupId>jakarta.ws.rs</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>jboss-transaction-api_1.3_spec</artifactId>
-          <groupId>org.jboss.spec.javax.transaction</groupId>
+          <artifactId>jakarta.transaction-api</artifactId>
+          <groupId>jakarta.transaction</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>jakarta.xml.soap-api</artifactId>
+          <groupId>jakarta.xml.soap</groupId>
         </exclusion>
         <exclusion>
           <artifactId>resteasy-multipart-provider</artifactId>
@@ -95,6 +99,10 @@
           <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
         </exclusion>
         <exclusion>
+          <artifactId>javax.annotation-api</artifactId>
+          <groupId>javax.annotation</groupId>
+        </exclusion>
+        <exclusion>
           <artifactId>jackson-datatype-jdk8</artifactId>
           <groupId>com.fasterxml.jackson.datatype</groupId>
         </exclusion>
@@ -103,20 +111,24 @@
           <groupId>com.google.zxing</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>openshift-restclient-java</artifactId>
-          <groupId>com.openshift</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>webauthn4j-core</artifactId>
           <groupId>com.webauthn4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>uap-java</artifactId>
+          <groupId>com.github.ua-parser</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>microprofile-openapi-api</artifactId>
+          <groupId>org.eclipse.microprofile.openapi</groupId>
         </exclusion>
       </exclusions>
     </dependency>
   </dependencies>
   <properties>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.source>17</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.target>17</maven.compiler.target>
   </properties>
 </project>
 
